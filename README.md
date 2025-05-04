@@ -1,12 +1,12 @@
 # Flint - Blender MCP API Server for macOS/iOS
 
-Flint is a FastAPI server that uses Blender MCP addon from -----add mention to the original repo----- (Multimodal Capability Protocol) with Claude to generate and export 3D models based on text prompts. This guide is specifically for macOS and iOS environments.
+Flint is a FastAPI-based server designed to interface with the Blender MCP (Multimodal Capability Protocol) addon, enabling the generation and export of 3D models from text prompts using Claude. This guide provides step-by-step instructions for setting up and running an MCP server on macOS connected with visionOS.
 
 ## Overview
 
 This project provides an API service that:
 1. Takes text prompts describing 3D models
-2. Uses Claude and MCP to generate Blender scenes (-----mention)
+2. Uses Claude and MCP to generate Blender scenes
 3. Exports the resulting 3D models as USDZ files
 4. Provides an endpoint to download the exported models
 
@@ -47,15 +47,13 @@ After completing the initial setup with the Blender MCP addon, follow these step
 Clone the repo and move to the Flint Server folder
 
 ```bash
-cd Flint Server
+cd Flint-Server
 ```
-
-
 
 ### 3. Create and activate a virtual environment
 
 ```bash
-python3 -m venv venv
+python3 -m venv .venv
 
 source .venv/bin/activate
 ```
@@ -100,8 +98,9 @@ file_url = f"<Your-ip-address>:8000/download/{EXPORT_FILENAME}"
 ```
 
 Edit `esport_model.py` to update the following paths according to your macOS system:
+```bash
 output_path = "/Users/../../exported_model.usdz"
-
+```
 
 ## Usage
 
@@ -156,6 +155,10 @@ Generates a 3D model based on a text prompt.
 ### GET /download/{filename}
 
 Downloads a generated model file.
+
+
+## Connection with visionOS
+Once the server is running correctly on your Mac and Blender is open with the add-on installed, you can launch the visionOS app—either on the simulator or a physical device. As soon as the app opens, enter your prompt into the text field and tap the button. If everything is set up properly, the model will appear in the space within a few seconds.
 
 ## Troubleshooting
 

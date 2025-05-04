@@ -54,6 +54,7 @@ async def run_mcp_job(prompt_request: PromptRequest):
         process = subprocess.run([
             BLENDER_PATH,
             "--background",
+            BLEND_PATH,  # Use the saved blend file
             "--python", "export_model.py",
             "--", EXPORT_PATH  # Pass the export path
         ], check=True, capture_output=True, text=True)

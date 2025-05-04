@@ -2,7 +2,7 @@
 //  Untitled.swift
 //  Flint
 //
-//  Created by Matteo Altobello on 29/04/25.
+//  Created by Create with Swift on 29/04/25.
 //
 
 struct PromptRequest: Codable {
