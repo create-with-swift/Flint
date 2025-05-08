@@ -13,7 +13,7 @@ class ViewModel {
     var errorMessage: String?
     
     func sendPromptToServer(prompt: String) async {
-        guard let url = URL(string: "http://192.168.1.120:8000/run") else {
+        guard let url = URL(string: "http://YOUR_MAC_IP_ADDRESSS:8000/run") else {
             errorMessage = "Invalid URL"
             return
         }
