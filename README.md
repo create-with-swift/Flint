@@ -1,6 +1,6 @@
-# Flint - Blender MCP API Server for macOS/iOS
+# Flint: API Server for Blender MCP on macOS with visionOS Connectivity
 
-Flint is a FastAPI-based server designed to interface with the Blender MCP (Multimodal Capability Protocol) addon, enabling the generation and export of 3D models from text prompts using Claude. This guide provides step-by-step instructions for setting up and running an MCP server on macOS connected with visionOS.
+Flint is a FastAPI-based server that integrates with the Blender MCP (Multimodal Capability Protocol) addon, enabling the generation and export of 3D models from text prompts using Claude. This guide provides step-by-step instructions for setting up and running an MCP server on macOS, configured to work with visionOS. To use Flint you will require an API key for accessing Claude.
 
 ## Overview
 
@@ -13,10 +13,10 @@ This project provides an API service that:
 ## Prerequisites
 
 - macOS operating system
-- [Homebrew](https://brew.sh/) package manager
+- [Homebrew](https://brew.sh/) package manager 4.5.0+
 - Python 3.11+
-- Blender (latest stable version recommended)
-- pip (Python package manager)
+- Blender 4.4.1 (latest stable version recommended) 
+- pip (Python package manager) pip 25+
 - Blender MCP addon from [blender-mcp repository](https://github.com/ahujasid/blender-mcp)
 
 ## Initial Setup
@@ -26,19 +26,20 @@ This project provides an API service that:
 Before proceeding with the API server installation, you need to set up the Blender MCP addon:
 
 1. Clone or download the Blender MCP repository:
-   ```bash
-   git clone https://github.com/ahujasid/blender-mcp.git
-   ```
 
-2. Copy at least the `addon.py` file from the repository to your Blender addons directory.
+```bash
+git clone https://github.com/ahujasid/blender-mcp.git
+```
 
-3. Enable the addon in Blender:
+2. Add and enable the addon in Blender:
    - Open Blender
    - Go to Edit > Preferences > Add-ons
+   - Click on Add-ons Settings and then Install from Disk
+   - Select the `addon.py` file from the downloaded repository
    - Find and enable the MCP addon
    - Save preferences
 
-## Installation
+### Installation
 
 After completing the initial setup with the Blender MCP addon, follow these steps to install the API server:
 
@@ -69,13 +70,13 @@ pip install fastapi uvicorn python-dotenv pydantic langchain langchain-anthropic
 ```bash
 # Install UVX CLI tool
 brew install uv
-
+```
 
 ### 6. Add your own Claude API Key
 
 Create an  `.env` file in the project root add your own API Key:
 
-```
+```bash
 ANTHROPIC_API_KEY=your_anthropic_api_key
 ```
 
@@ -98,6 +99,7 @@ file_url = f"<Your-ip-address>:8000/download/{EXPORT_FILENAME}"
 ```
 
 Edit `esport_model.py` to update the following paths according to your macOS system:
+
 ```bash
 output_path = "/Users/../../exported_model.usdz"
 ```
@@ -129,6 +131,7 @@ Use the returned URL or access directly:
 ```
 http://localhost:8000/download/exported_model.usdz
 ```
+
 If it does not work substitute localhost with your personal Mac IP address
 
 ## API Endpoints
@@ -158,7 +161,9 @@ Downloads a generated model file.
 
 
 ## Connection with visionOS
-Once the server is running correctly on your Mac and Blender is open with the add-on installed, you can launch the visionOS app—either on the simulator or a physical device. As soon as the app opens, enter your prompt into the text field and tap the button. If everything is set up properly, the model will appear in the space within a few seconds.
+Once the server is running correctly on your Mac and Blender is open with the add-on installed, you can launch the visionOS app—either on the simulator or a physical device. Modify the `url` property in the `ViewModel.swift` file adding your Mac IP Address.
+
+As soon as the app opens, enter your prompt into the text field and tap the button. If everything is set up properly, the model will appear in the space within a few seconds.
 
 ## Troubleshooting
 
