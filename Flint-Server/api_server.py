@@ -11,7 +11,8 @@ from mcp_use import MCPAgent, MCPClient
 
 app = FastAPI()
 
-load_dotenv()
+# Load environment variables from .env file
+load_dotenv(override=True)
 
 class PromptRequest(BaseModel):
     prompt: str
@@ -89,7 +90,7 @@ async def run_generation(prompt: str, profile_name: str):
 
     try:
         llm = ChatAnthropic(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-4-20250514",
             max_tokens=profile["max_tokens"],
             temperature=profile["temperature"],
             system=f"{SYSTEM_INSTRUCTIONS} {profile.get('system_hint', '')}".strip()
@@ -238,7 +239,7 @@ async def health_check():
         claude_ok = False
         try:
             from langchain_anthropic import ChatAnthropic
-            llm = ChatAnthropic(model="claude-sonnet-4-5-20250929", max_tokens=10)
+            llm = ChatAnthropic(model="claude-sonnet-4-20250514", max_tokens=10)
             test_response = llm.invoke("Hi")
             claude_ok = True
         except Exception:
@@ -251,7 +252,7 @@ async def health_check():
                 "export_folder": export_folder_ok,
                 "claude_api": claude_ok
             },
-            "model": "claude-sonnet-4-5-20250929"
+            "model": "claude-sonnet-4-20250514"
         }
     except Exception as e:
         return {"status": "unhealthy", "error": str(e)}

@@ -14,7 +14,7 @@ if sys.executable != VENV_PYTHON and os.path.exists(VENV_PYTHON):
 if __name__ == "__main__":
     import uvicorn
     print("🚀 Starting Flint 3D Model Generation Server...")
-    print("📡 Model: Claude Sonnet 4.5 (20250929)")
+    print("📡 Model: Claude Sonnet 4.5 (20250514)")
     print("🔗 Server will be available at: http://localhost:8000")
     print("📊 Health check: http://localhost:8000/health")
     print("📱 API docs: http://localhost:8000/docs")
