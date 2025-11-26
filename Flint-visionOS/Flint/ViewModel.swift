@@ -9,18 +9,26 @@ import SwiftUI
 
 @Observable
 class ViewModel {
-    var modelURL: URL? = nil // Default model
+    var generatedModels: [GeneratedModel] = []
+    var isGenerating: Bool = false
     var errorMessage: String?
+    var isHighQuality: Bool = false
     
     func sendPromptToServer(prompt: String) async {
-        guard let url = URL(string: "http://YOUR_MAC_IP_ADDRESSS:8000/run") else {
+        let endpoint = isHighQuality ? "http://localhost:8000/run-high" : "http://localhost:8000/run"
+        guard let url = URL(string: endpoint) else {
             errorMessage = "Invalid URL"
+            isGenerating = false
             return
         }
+        
+        isGenerating = true
+        errorMessage = nil
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.timeoutInterval = .infinity
         
         let body = PromptRequest(prompt: prompt)
         
@@ -32,6 +40,7 @@ class ViewModel {
             
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
                 errorMessage = "Server error"
+                isGenerating = false
                 return
             }
             
@@ -43,16 +52,26 @@ class ViewModel {
             let decodedResponse = try JSONDecoder().decode(MCPResponse.self, from: data)
             print("Decoded Response \(decodedResponse.modelURL)")
             
-            if let url = URL(string: decodedResponse.modelURL) {
-                print("Constructed URL : \(url)")
-                modelURL = url
+            if let modelURL = URL(string: "http://localhost:8000\(decodedResponse.modelURL)") {
+                print("Constructed URL : \(modelURL)")
+                
+                // Add new model to the history
+                let newModel = GeneratedModel(prompt: prompt, url: modelURL)
+                generatedModels.insert(newModel, at: 0)
+                
                 errorMessage = nil
             } else {
                 errorMessage = "Invalid model URL"
             }
+            
+            isGenerating = false
         } catch {
             errorMessage = "Failed to send prompt: \(error.localizedDescription)"
+            isGenerating = false
         }
     }
-
+    
+    func deleteModel(_ model: GeneratedModel) {
+        generatedModels.removeAll { $0.id == model.id }
+    }
 }

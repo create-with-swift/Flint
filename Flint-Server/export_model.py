@@ -8,7 +8,7 @@ if len(sys.argv) > 1:
     print(f"Using output path from command line: {output_path}")
 else:
     # Fallback path if no argument is provided
-    output_path = "OUTPUT_PATH_FOLDER/exported_model.usdz"
+    output_path = ""
     print(f"No path argument found, using default: {output_path}")
 
 # Print all objects in the scene for debugging
